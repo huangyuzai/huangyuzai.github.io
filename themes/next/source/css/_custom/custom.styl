@@ -1,0 +1,140 @@
+/* Custom styles.*/
+/*评论区的背景颜色*/
+    div#comments{
+       background:rgba(255,255,255,0.8);
+    }
+    div#wf-form{
+        background: transparent !important;
+    }
+    form#register-form .info-wrapper input{
+        background: transparent !important;
+        border-bottom: solid 1px #999 !important;
+    }
+/*title的样式*/
+    #box{
+        height: 150px;
+        position: relative;
+    }
+    .icon_left{
+        position: absolute;
+        top: -28px;
+        left: -39px;
+        background-color: #555;
+        color: white;
+        border-radius: 100%;
+        height: 45px;
+        width: 45px;
+        z-index: -1;
+        font-size: 50px;
+    }
+    .left_i{
+        position: absolute;
+        top: -2px;
+        left: -1px;
+        z-index: 0;
+    }
+    .icon_right{
+        transform: rotateY(180deg);
+        position: absolute;
+        top: -28px;
+        right: -39px;
+        background-color: #555;
+        color: white;
+        border-radius: 100%;
+        height: 45px;
+        width: 45px;
+        z-index: -1;
+        font-size: 50px;
+    }
+    .right_i{
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        z-index: 0;
+    }
+    @media (max-width: 767px) {
+        #box{
+            display: none;
+        }
+        .brand{display: inline-block !important;}
+        #posts{margin-top: -50px !important;}
+        div.archive{margin-top: 0 !important;}
+        .header-inner{padding-top: 100px !important}
+        #content{margin-top: 100px !important}
+        pre,.highlight {font-size: 13px !important;}
+        .post-copyright{font-size: 12px !important;}
+
+    }
+    /*title的a*/
+    .brand{display: none}
+    .posts-expand{padding-top: 0 !important}
+    .header-inner{padding-top: 25px;}
+    /*滚动条样式*/
+    /*// 更好的侧边滚动条
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    ::-webkit-scrollbar-button:start:increment,::-webkit-scrollbar-button:end:decrement {
+      display: none;
+    }
+    ::-webkit-scrollbar-corner {
+      display: block;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background-color: rgba(0,0,0,.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      border-radius: 8px;
+      background-color: rgba(0,0,0,.5);
+    }
+    ::-webkit-scrollbar-track,::-webkit-scrollbar-thumb {
+      border-right: 1px solid transparent;
+      border-left: 1px solid transparent;
+    }
+    ::-webkit-scrollbar-track:hover {
+      background-color: rgba(0,0,0,.15);
+    }
+    ::-webkit-scrollbar-button:start {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-button:start:hover {
+    }
+    ::-webkit-scrollbar-button:start:active {
+    }
+    ::-webkit-scrollbar-button:end {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-button:end:hover {
+    }
+    ::-webkit-scrollbar-button:end:active {
+    }*/
+    .grav_left{
+      position: absolute
+      top: -28px
+      left: -39px
+      width: 45px
+      height: 45px
+      opacity: 0
+    }
+    .grav_right{
+      position: absolute
+      top: -28px
+      right: -39px
+      width: 45px
+      height: 45px
+      opacity: 0
+    }
+    .post-toc .nav .nav-child{
+      display: block
+    }
+    .copyright{
+      display: inline-block;
+    }
