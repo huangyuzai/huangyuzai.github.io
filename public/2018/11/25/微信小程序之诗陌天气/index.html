@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55); /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言这篇记录一下我个人小程序(诗陌天气)的开发过程源码地址: Github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序之诗陌天气">
+<meta property="og:url" content="https://hyuzai.cn/2018/11/25/微信小程序之诗陌天气/index.html">
+<meta property="og:site_name" content="yuzai个人博客">
+<meta property="og:description" content="前言这篇记录一下我个人小程序(诗陌天气)的开发过程源码地址: Github">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/smallQRcode1.jpg">
+<meta property="og:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/myApp.png">
+<meta property="og:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/clickAdd.png">
+<meta property="og:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/addKey.png">
+<meta property="og:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/20181126011505.jpg">
+<meta property="og:updated_time" content="2018-11-25T17:49:07.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序之诗陌天气">
+<meta name="twitter:description" content="前言这篇记录一下我个人小程序(诗陌天气)的开发过程源码地址: Github">
+<meta name="twitter:image" content="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/smallQRcode1.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yuzai个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://hyuzai.cn/2018/11/25/微信小程序之诗陌天气/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>微信小程序之诗陌天气 | yuzai个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/huangyuzai" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper " >
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yuzai个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+      <div id="box" style="width: 350px;margin: 0 auto;">
+        <canvas id="canvas" width="900" height="500" style="margin: 0 auto;position:relative;z-index:2;margin-bottom: 1em;max-width: 100%;height: auto;width: 100%;font-family:Apple Chancery"></canvas>
+        <a href="javascript:;" title="别闹！在干活呢" class="grav_left">111</a>
+        <a href="javascript:;" title="别弄我，去弄我对面那个" class="grav_right"></a>
+        <span class="icon_left"><i class="left_i fa fa-grav" aria-hidden="true"></i></span>
+        <span class="icon_right"><i class="right_i fa fa-grav" aria-hidden="true"></i></span>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+  <script type="text/javascript" src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/titleAnimate.min.js"></script>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-fort-awesome "></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags "></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-pie-chart "></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-moon-o "></i> <br />时间轴</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hyuzai.cn/2018/11/25/微信小程序之诗陌天气/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Author">
+      <meta itemprop="description" content="记录学习过程，以及个人随笔">
+      <meta itemprop="image" content="/images/my_img.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yuzai个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微信小程序之诗陌天气
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-pencil-square-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-25 22:58:22" itemprop="dateCreated datePublished" datetime="2018-11-25T22:58:22+08:00">2018-11-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-hourglass-half"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-26 01:49:07" itemprop="dateModified" datetime="2018-11-26T01:49:07+08:00">2018-11-26</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/11/25/微信小程序之诗陌天气/" class="leancloud_visitors" data-flag-title="微信小程序之诗陌天气">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note default"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇记录一下我个人小程序(诗陌天气)的开发过程<br>源码地址: <a href="https://github.com/huangyuzai/smallWeather" target="_blank" rel="noopener">Github</a></p></div>
+<a id="more"></a>
+<p>诗陌天气是我的第一个个人小程序。目前已上线，可扫下方二维码或微信搜索 <code>诗陌天气</code> 即可体验。</p>
+<p><img src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/smallQRcode1.jpg" alt="诗陌天气小程序码"></p>
+<p>接下来就开始吧</p>
+<h2 id="首先，前期准备工作你需要做的"><a href="#首先，前期准备工作你需要做的" class="headerlink" title="首先，前期准备工作你需要做的"></a>首先，前期准备工作你需要做的</h2><h3 id="在-微信公众平台-注册一个账号"><a href="#在-微信公众平台-注册一个账号" class="headerlink" title="在 微信公众平台 注册一个账号"></a>在 <code>微信公众平台</code> 注册一个账号</h3><p>这里就不讲这部分了。。。相信在座的都有</p>
+<h3 id="在-高德地图API-注册一个账号"><a href="#在-高德地图API-注册一个账号" class="headerlink" title="在 高德地图API 注册一个账号"></a>在 <code>高德地图API</code> 注册一个账号</h3><p>因为查询地址需要用到。  </p>
+<p>首先打开 <a href="https://lbs.amap.com/api" target="_blank" rel="noopener">官网</a> ,接着点击 <code>注册</code> 填写相关信息就注册完成了。  </p>
+<p>然后点击头像旁边的 <code>控制台</code> 去创建应用，再然后点击 <code>应用管理--我的应用</code></p>
+<p><img src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/myApp.png" alt="应用管理--我的应用"></p>
+<p>点击右上角的 <code>创建新应用</code>，应用名称最好是带有语义的，就是一看到应用名称就知道这个应用的作用是什么，应用类型就选 <code>其他</code> 吧，到这应用就创建好了。  </p>
+<p>现在来给这个应用添加 <code>key</code>  </p>
+<p>点击这个应用的右边那个加号</p>
+<p><img src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/clickAdd.png" alt="key"></p>
+<p>接下来填写 <code>key</code> 的名称，命名最好是 <code>应用名+应用场景</code>，一目了然<br><code>服务平台</code> 选择 <code>web服务</code><br><code>IP白名单</code> 是说只允许该ip或ip段访问这个api，这里我就不设置了</p>
+<p><img src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/addKey.png" alt="key"></p>
+<p>点击 <code>提交</code> 之后这一步就完成了。</p>
+<h3 id="去-和风天气-注册账号"><a href="#去-和风天气-注册账号" class="headerlink" title="去 和风天气 注册账号"></a>去 <code>和风天气</code> 注册账号</h3><p>找了好几个API，经过比较之后还是选择了 <a href="https://www.heweather.com/" target="_blank" rel="noopener">和风天气</a> ，因为他的免费版也能返回挺多数据的，注册成为个人开发者之后更是增加不少。  </p>
+<p>去官网点击注册，填写相关信息就注册好了</p>
+<p>接下来开始愉快的撸代码吧！！！</p>
+<h2 id="页面布局"><a href="#页面布局" class="headerlink" title="页面布局"></a>页面布局</h2><p>页面较为简单。我仅使用了  <code>实况天气、三天天气预报</code> 这两个数据而已。目前就长这个样吧</p>
+<p><img src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/20181126011505.jpg" alt="页面布局"></p>
+<p>样式和布局就不说了，直接贴代码</p>
+<p><code>wxss</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  position: relative;</span><br><span class="line">  color: #fff;</span><br><span class="line">  padding: 0;</span><br><span class="line">  width: 100%;</span><br><span class="line">  padding-bottom: 60px;</span><br><span class="line">&#125;</span><br><span class="line">/*搜索区域*/</span><br><span class="line">.section &#123;</span><br><span class="line">  position:absolute;</span><br><span class="line">  width:100%;</span><br><span class="line">  padding:20rpx;</span><br><span class="line">  box-sizing:border-box;</span><br><span class="line">  display:flex;</span><br><span class="line">  justify-content:center;</span><br><span class="line">  transition: all .2s;</span><br><span class="line">  height: 100px;</span><br><span class="line">  align-items: center;</span><br><span class="line">&#125;</span><br><span class="line">/*搜索框的容器*/</span><br><span class="line">.inputBox &#123;</span><br><span class="line">  width:60%;</span><br><span class="line">  display:inline-block;</span><br><span class="line">&#125;</span><br><span class="line">/*搜索框*/</span><br><span class="line">.cityInput &#123;</span><br><span class="line">  margin-right:30rpx;</span><br><span class="line">  color:#fff;</span><br><span class="line">&#125;</span><br><span class="line">/*天气数据区域*/</span><br><span class="line">.weatherData &#123;</span><br><span class="line">  padding: 0 20rpx;</span><br><span class="line">  width: 100%;</span><br><span class="line">  box-sizing: border-box;</span><br><span class="line">  margin-top: 100px;</span><br><span class="line">&#125;</span><br><span class="line">/*温度*/</span><br><span class="line">.temperature &#123;</span><br><span class="line">  font-size:60px;</span><br><span class="line">  margin-top:20px;</span><br><span class="line">  display:inline-block;</span><br><span class="line">  margin-bottom:8rpx;</span><br><span class="line">&#125;</span><br><span class="line">/*摄氏度符号*/</span><br><span class="line">.temperatureSymbol &#123;</span><br><span class="line">  font-size: 20px;</span><br><span class="line">  float: right;</span><br><span class="line">  margin-top: 10px;</span><br><span class="line">  margin-left: 10rpx;</span><br><span class="line">&#125;</span><br><span class="line">/*数据来源*/</span><br><span class="line">.weatherSource &#123;</span><br><span class="line">  position:absolute;</span><br><span class="line">  bottom:10rpx;</span><br><span class="line">  font-size:12px;</span><br><span class="line">  opacity:.3;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">&#125;</span><br><span class="line">/*天气状况*/</span><br><span class="line">.weatherCond &#123;</span><br><span class="line">  font-size: 30px;</span><br><span class="line">&#125;</span><br><span class="line">/*切换*/</span><br><span class="line">.switch &#123;</span><br><span class="line">  font-size: 14px;</span><br><span class="line">&#125;</span><br><span class="line">/*查询按钮*/</span><br><span class="line">.searchBtn &#123;</span><br><span class="line">  margin-right: 20px;</span><br><span class="line">&#125;</span><br><span class="line">/*预报的外层view*/</span><br><span class="line">.forecast &#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">&#125;</span><br><span class="line">/*预报的ul*/</span><br><span class="line">.weatherForecast &#123;</span><br><span class="line">  width:100%;</span><br><span class="line">  display:block;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">  font-size: 12px;</span><br><span class="line">  margin-top: 50px;</span><br><span class="line">  word-break: bra</span><br><span class="line">&#125;</span><br><span class="line">/*预报的子级*/</span><br><span class="line">.weatherForecast li &#123;</span><br><span class="line">  width: 33%;</span><br><span class="line">  display: block;</span><br><span class="line">  text-align: center;</span><br><span class="line">  border-right: solid 1px rgba(255,255,255,.2);</span><br><span class="line">  float: left;</span><br><span class="line">  min-height: 190px;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">.weatherForecast li:last-child &#123;</span><br><span class="line">  border-right: none;</span><br><span class="line">&#125;</span><br><span class="line">/*天气状态图标*/</span><br><span class="line">.weatherForecast image &#123;</span><br><span class="line">  width:60px;</span><br><span class="line">  height:60px;</span><br><span class="line">  display:block;</span><br><span class="line">  margin:15px auto;</span><br><span class="line">&#125;</span><br><span class="line">/*日期的文字描述*/</span><br><span class="line">.dateTitle &#123;</span><br><span class="line">  font-size: 22px;</span><br><span class="line">&#125;</span><br><span class="line">/*预报的温度*/</span><br><span class="line">.forecastTemperature &#123;</span><br><span class="line">  font-size: 16px;</span><br><span class="line">  display: block;</span><br><span class="line">  margin-bottom: 5px;</span><br><span class="line">&#125;</span><br><span class="line">/*温度里面的状态变化*/</span><br><span class="line">.stateChange &#123;</span><br><span class="line">  font-size: 16px;</span><br><span class="line">  min-height:42px;</span><br><span class="line">  word-break:break-all;</span><br><span class="line">  display:flex;</span><br><span class="line">  justify-content:center;</span><br><span class="line">  align-items:center;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">.weatherUl &#123;</span><br><span class="line">  color: #333;</span><br><span class="line">  font-size: 12px;</span><br><span class="line">  text-align: center;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">  display: block;</span><br><span class="line">  color: #fff;</span><br><span class="line">  margin-top: 80rpx;</span><br><span class="line">&#125;</span><br><span class="line">.weatherLi &#123;</span><br><span class="line">  display: inline-block;</span><br><span class="line">  width: 25%;</span><br><span class="line">  float: left;</span><br><span class="line">  line-height: 20px;</span><br><span class="line">&#125;</span><br><span class="line">.phcolor &#123;</span><br><span class="line">  color: #fff;</span><br><span class="line">&#125;</span><br><span class="line">.zhuan &#123;</span><br><span class="line">  font-size: 14px;</span><br><span class="line">  color: rgba(255,255,255,.8);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>wxml</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.wxml--&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- style="height:&#123;&#123;screenHeight&#125;&#125;px" --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span> <span class="attr">style</span>=<span class="string">"background: linear-gradient(&#123;&#123;startColor&#125;&#125;, &#123;&#123;endColor&#125;&#125;); min-height: &#123;&#123;screenHeight&#125;&#125;px"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- wx:if="&#123;&#123;isSearch&#125;&#125;" --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"section"</span>  <span class="attr">style</span>=<span class="string">"top:&#123;&#123;positionTop&#125;&#125;px"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"inputBox"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"cityInput"</span> <span class="attr">placeholder-class</span>=<span class="string">"phcolor"</span> <span class="attr">bindinput</span>=<span class="string">"bindKeyInput"</span> <span class="attr">placeholder</span>=<span class="string">"请输入查询地址(市/区)"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;inputValue&#125;&#125;"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"searchBtn"</span> <span class="attr">bindtap</span>=<span class="string">"clickSeach"</span> &gt;</span>查询<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">""</span> <span class="attr">bindtap</span>=<span class="string">"hideSearch"</span> &gt;</span>×<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"weatherData"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;isData&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"cityName"</span>&gt;</span>&#123;&#123;cityName&#125;&#125;\t\t<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"switch"</span> <span class="attr">bindtap</span>=<span class="string">"showSearch"</span>&gt;</span>[切换]\n<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"temperature"</span>&gt;</span>&#123;&#123;weather.tmp&#125;&#125;<span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"temperatureSymbol"</span>&gt;</span>℃\n<span class="tag">&lt;/<span class="name">text</span>&gt;</span><span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"weatherCond"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">text</span>&gt;</span>&#123;&#123;weather.cond_txt&#125;&#125;\t<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- &lt;image class="icon" src="../static/weatherIcon/&#123;&#123;weather.cond_code&#125;&#125;.png"&gt;&lt;/image&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"weatherUl"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"weatherLi"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span>&gt;</span>体感温度\n&#123;&#123;weather.fl&#125;&#125;℃<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"weatherLi"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span>&gt;</span>&#123;&#123;weather.wind_dir&#125;&#125;\n&#123;&#123;weather.wind_sc&#125;&#125;级<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- &lt;li class="weatherLi"&gt; --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;text&gt;风向\n&lt;/text&gt; --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- &lt;/li&gt; --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"weatherLi"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span>&gt;</span>风速\n&#123;&#123;weather.wind_spd&#125;&#125;\tKM/H<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"weatherLi"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span>&gt;</span>湿度\n&#123;&#123;weather.hum&#125;&#125;%<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"forecast"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"weatherForecast"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;forecashData&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"forecast"</span> <span class="attr">wx:key</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"dateTitle"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;index == 0&#125;&#125;"</span>&gt;</span>今天<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"dateTitle"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;index == 1&#125;&#125;"</span>&gt;</span>明天<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"dateTitle"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;index == 2&#125;&#125;"</span>&gt;</span>后天<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">text</span>&gt;</span>\n&#123;&#123;forecast.date&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">image</span> <span class="attr">src</span>=<span class="string">"../static/weatherIcon/&#123;&#123;forecast.cond_code_d&#125;&#125;.png"</span>&gt;</span><span class="tag">&lt;/<span class="name">image</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"forecastTemperature"</span>&gt;</span>&#123;&#123;forecast.tmp_min&#125;&#125;\t~\t&#123;&#123;forecast.tmp_max&#125;&#125;℃<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"stateChange"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;forecast.cond_code_d != forecast.cond_code_n&#125;&#125;"</span>&gt;</span>&#123;&#123;forecast.cond_txt_d&#125;&#125;<span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"zhuan"</span>&gt;</span>\t/\t<span class="tag">&lt;/<span class="name">text</span>&gt;</span>&#123;&#123;forecast.cond_txt_n&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"stateChange"</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;forecast.cond_code_d == forecast.cond_code_n&#125;&#125;"</span>&gt;</span>&#123;&#123;forecast.cond_txt_d&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"weatherSource"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">text</span>&gt;</span>数据来源: 和风天气<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="定位获取天气数据"><a href="#定位获取天气数据" class="headerlink" title="定位获取天气数据"></a>定位获取天气数据</h2><p>这个功能实现的是用户一点进来就通过 <code>wx.getLocation()</code> 获取他的定位，得到坐标，再通过高德平台的api来得到该坐标的 <code>adcode</code> 值。然后再根据高德api返回来的值来请求 <code>和风天气</code> 的api</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*自动定位---获取城市坐标，再通过高德API的逆地理编码获取到该坐标的城市编码*/</span></span><br><span class="line">wx.getLocation(&#123;</span><br><span class="line">  type: <span class="string">'wgs84'</span>,</span><br><span class="line">  success (res) &#123;</span><br><span class="line">  <span class="keyword">const</span> location = (res.longitude + <span class="string">','</span> + res.latitude)</span><br><span class="line">  wx.request(&#123;</span><br><span class="line">    url: <span class="string">'https://restapi.amap.com/v3/geocode/regeo'</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">      <span class="string">'key'</span>: <span class="string">'你的key'</span>,</span><br><span class="line">      <span class="string">'location'</span>: location</span><br><span class="line">    &#125;,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// console.log(res)</span></span><br><span class="line">      that.setData(&#123;</span><br><span class="line">        adcode: res.data.regeocode.addressComponent.adcode</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="comment">/*请求天气数据 */</span></span><br><span class="line">      that.requestWeather()</span><br><span class="line">    &#125;,</span><br><span class="line">    complete: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      wx.hideLoading()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  fail: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    wx.showModal(&#123;</span><br><span class="line">      content: <span class="string">'定位不到该地址，请手动输入'</span>,</span><br><span class="line">      showCancel: <span class="literal">false</span>,</span><br><span class="line">      confirmText: <span class="string">'知道了'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        isSearch: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;),</span><br><span class="line"><span class="comment">/*使用和风天气API请求天气数据*/</span></span><br><span class="line">  requestWeather () &#123;</span><br><span class="line">    <span class="comment">// console.log('1')</span></span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span></span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: <span class="string">'https://free-api.heweather.com/s6/weather'</span>,</span><br><span class="line">      data: &#123;</span><br><span class="line">        <span class="string">'key'</span>: <span class="string">'你的key'</span>,</span><br><span class="line">        <span class="comment">/*根据adcode值获取天气数据*/</span></span><br><span class="line">        <span class="string">'location'</span>: that.data.adcode</span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// console.log(res)</span></span><br><span class="line">        <span class="keyword">if</span> (res.data.HeWeather6[<span class="number">0</span>].status != <span class="string">'ok'</span>) &#123;</span><br><span class="line">          wx.showModal(&#123;</span><br><span class="line">            content: <span class="string">'该城市/地区没有你所请求的数据'</span>,</span><br><span class="line">            showCancel: <span class="literal">false</span>,</span><br><span class="line">            confirmText: <span class="string">'知道了'</span></span><br><span class="line">          &#125;)</span><br><span class="line">          that.setData(&#123;</span><br><span class="line">            positionTop: <span class="number">0</span></span><br><span class="line">          &#125;)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          wx.setStorageSync(<span class="string">'weather'</span>, res.data.HeWeather6[<span class="number">0</span>])        <span class="comment">//写入缓存</span></span><br><span class="line">          <span class="keyword">var</span> weather = wx.getStorageSync(<span class="string">'weather'</span>)                  <span class="comment">//读取缓存</span></span><br><span class="line">          <span class="keyword">var</span> cityName = weather.basic.admin_area + <span class="string">' '</span> + weather.basic.parent_city       <span class="comment">//拼接省份和城市名称</span></span><br><span class="line">          <span class="comment">//wx.setNavigationBarColor()  //动态设置头部背景色</span></span><br><span class="line">          that.setData(&#123;</span><br><span class="line">            isData: <span class="literal">true</span>,</span><br><span class="line">            weather: weather.now,</span><br><span class="line">            forecashData: weather.daily_forecast,</span><br><span class="line">            cityName: cityName,</span><br><span class="line">            inputValue: <span class="string">''</span></span><br><span class="line">          &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(that.data.isRefresh) &#123;</span><br><span class="line">          <span class="keyword">if</span>(res.data.HeWeather6[<span class="number">0</span>].status == <span class="string">'ok'</span>) &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'刷新成功'</span>,</span><br><span class="line">              icon: <span class="string">'none'</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'刷新失败，请稍后尝试'</span>,</span><br><span class="line">              icon: <span class="string">'none'</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      fail: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        wx.showToast(&#123;</span><br><span class="line">          title: <span class="string">'网络似乎不太好哦~'</span>,</span><br><span class="line">          icon: <span class="string">'none'</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      complete: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        wx.hideNavigationBarLoading() <span class="comment">//完成停止加载</span></span><br><span class="line">        wx.stopPullDownRefresh() <span class="comment">//停止下拉刷新</span></span><br><span class="line">        that.setData(&#123;</span><br><span class="line">          isRefresh: <span class="literal">false</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>上面使用的 <code>高德key</code> 需要在高德平台控制台里面的 <code>应用管理--我的应用</code> 里面获取。</p>
+<p><code>和风天气key</code> 需要在和风天气的控制台里面的 <code>我的控制台--认证key</code> 里面获取</p>
+<p>高德api文档 =&gt; <a href="https://lbs.amap.com/api/" target="_blank" rel="noopener">文档</a>  </p>
+<p>和风天气api文档 =&gt; <a href="https://www.heweather.com/documents" target="_blank" rel="noopener">文档</a></p>
+<h2 id="搜索得到数据"><a href="#搜索得到数据" class="headerlink" title="搜索得到数据"></a>搜索得到数据</h2><p>用户可以通过点击 <code>切换</code> 来输入想要查询的地址。需要通过 <code>bindKeyInput()</code> 来获取用户输入的值，然后再给 <code>查询</code> 绑定点击事件，依然是先通过高德api得到该城市的 <code>adcode</code> 值，然后再调用和风天气来获取数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取输入框的值</span></span><br><span class="line">bindKeyInput: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">    inputValue: e.detail.value</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">/*查询*/</span></span><br><span class="line">  clickSeach: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> inputValue = that.data.inputValue;</span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      isSearch: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span>(inputValue == <span class="string">''</span>) &#123;</span><br><span class="line">      wx.showModal(&#123;</span><br><span class="line">        content: <span class="string">'请输入查询地址'</span>,</span><br><span class="line">        showCancel: <span class="literal">false</span>,</span><br><span class="line">        confirmText: <span class="string">'知道了'</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'请稍等'</span></span><br><span class="line">      &#125;)</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        <span class="comment">/*高德api */</span></span><br><span class="line">        <span class="comment">/*获取输入城市的adcode值 */</span></span><br><span class="line">        url: <span class="string">'https://restapi.amap.com/v3/geocode/geo'</span>,</span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">'address'</span>: inputValue,</span><br><span class="line">          <span class="string">'output'</span>: <span class="string">'json'</span>,</span><br><span class="line">          <span class="string">'key'</span>:<span class="string">'你的key'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">          wx.hideLoading()</span><br><span class="line">          <span class="keyword">if</span>(res.data.count == <span class="number">0</span>) &#123;</span><br><span class="line">            wx.showModal(&#123;</span><br><span class="line">              content: <span class="string">'请输入正确的地址'</span>,</span><br><span class="line">              showCancel: <span class="literal">false</span>,</span><br><span class="line">              confirmText: <span class="string">'知道了'</span></span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            that.setData(&#123;</span><br><span class="line">              adcode: res.data.geocodes[<span class="number">0</span>].adcode,</span><br><span class="line">              positionTop: <span class="number">-100</span></span><br><span class="line">            &#125;)</span><br><span class="line">            that.requestWeather()       <span class="comment">//请求数据</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        fail () &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'找不到你的位置呢'</span>,</span><br><span class="line">            icon: <span class="string">'none'</span></span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">        complete: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          wx.hideLoading()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/*使用和风天气API请求天气数据*/</span></span><br><span class="line">  requestWeather () &#123;</span><br><span class="line">    <span class="comment">// console.log('1')</span></span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span></span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: <span class="string">'https://free-api.heweather.com/s6/weather'</span>,</span><br><span class="line">      data: &#123;</span><br><span class="line">        <span class="string">'key'</span>: <span class="string">'你的key'</span>,</span><br><span class="line">        <span class="comment">/*根据adcode值获取天气数据*/</span></span><br><span class="line">        <span class="string">'location'</span>: that.data.adcode</span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// console.log(res)</span></span><br><span class="line">        <span class="keyword">if</span> (res.data.HeWeather6[<span class="number">0</span>].status != <span class="string">'ok'</span>) &#123;</span><br><span class="line">          wx.showModal(&#123;</span><br><span class="line">            content: <span class="string">'该城市/地区没有你所请求的数据'</span>,</span><br><span class="line">            showCancel: <span class="literal">false</span>,</span><br><span class="line">            confirmText: <span class="string">'知道了'</span></span><br><span class="line">          &#125;)</span><br><span class="line">          that.setData(&#123;</span><br><span class="line">            positionTop: <span class="number">0</span></span><br><span class="line">          &#125;)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          wx.setStorageSync(<span class="string">'weather'</span>, res.data.HeWeather6[<span class="number">0</span>])        <span class="comment">//写入缓存</span></span><br><span class="line">          <span class="keyword">var</span> weather = wx.getStorageSync(<span class="string">'weather'</span>)                  <span class="comment">//读取缓存</span></span><br><span class="line">          <span class="keyword">var</span> cityName = weather.basic.admin_area + <span class="string">' '</span> + weather.basic.parent_city       <span class="comment">//拼接省份和城市名称</span></span><br><span class="line">          <span class="comment">//wx.setNavigationBarColor()  //动态设置头部背景色</span></span><br><span class="line">          that.setData(&#123;</span><br><span class="line">            isData: <span class="literal">true</span>,</span><br><span class="line">            weather: weather.now,</span><br><span class="line">            forecashData: weather.daily_forecast,</span><br><span class="line">            cityName: cityName,</span><br><span class="line">            inputValue: <span class="string">''</span></span><br><span class="line">          &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(that.data.isRefresh) &#123;</span><br><span class="line">          <span class="keyword">if</span>(res.data.HeWeather6[<span class="number">0</span>].status == <span class="string">'ok'</span>) &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'刷新成功'</span>,</span><br><span class="line">              icon: <span class="string">'none'</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'刷新失败，请稍后尝试'</span>,</span><br><span class="line">              icon: <span class="string">'none'</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      fail: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        wx.showToast(&#123;</span><br><span class="line">          title: <span class="string">'网络似乎不太好哦~'</span>,</span><br><span class="line">          icon: <span class="string">'none'</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      complete: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        wx.hideNavigationBarLoading() <span class="comment">//完成停止加载</span></span><br><span class="line">        wx.stopPullDownRefresh() <span class="comment">//停止下拉刷新</span></span><br><span class="line">        that.setData(&#123;</span><br><span class="line">          isRefresh: <span class="literal">false</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><p>建议还是去 <code>github</code> 看源码，这里的代码也不全。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>
+    yuzai
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://hyuzai.cn/2018/11/25/微信小程序之诗陌天气/" title="微信小程序之诗陌天气">https://hyuzai.cn/2018/11/25/微信小程序之诗陌天气/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/05/vue的初始化项目/" rel="next" title="vue的初始化项目">
+                <i class="fa fa-chevron-left"></i> vue的初始化项目
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=RA-5b74267e896c7510" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zODgwNy8xNTMzNQ=="></div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+
+              <img class="site-author-image" itemprop="image"
+                src="/images/my_img.png"
+                alt="Author" />
+
+            
+              <p class="site-author-name" itemprop="name">yuzai</p>
+              <p class="site-description motion-element" itemprop="description">记录学习过程，以及个人随笔</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/huangyuzai" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1792132332@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/qq_37032151" target="_blank" title="csdn"><i class="fa fa-fw fa-contao"></i>csdn</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#首先，前期准备工作你需要做的"><span class="nav-number">2.</span> <span class="nav-text">首先，前期准备工作你需要做的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在-微信公众平台-注册一个账号"><span class="nav-number">2.1.</span> <span class="nav-text">在 微信公众平台 注册一个账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-高德地图API-注册一个账号"><span class="nav-number">2.2.</span> <span class="nav-text">在 高德地图API 注册一个账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去-和风天气-注册账号"><span class="nav-number">2.3.</span> <span class="nav-text">去 和风天气 注册账号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面布局"><span class="nav-number">3.</span> <span class="nav-text">页面布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定位获取天气数据"><span class="nav-number">4.</span> <span class="nav-text">定位获取天气数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索得到数据"><span class="nav-number">5.</span> <span class="nav-text">搜索得到数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">6.</span> <span class="nav-text">Tips</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+  <i class="fa fa-yoast"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuzai</span>
+
+  
+
+  
+</div>
+
+
+
+
+<span class="post-meta-divider">|</span>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+      <div>
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=RA-5b74267e896c7510" async = "async" ></script>
+</div>
+
+      </div>
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "3zsVX30bclzi2sWdSv7BdPku-MdYXbMMI")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "3zsVX30bclzi2sWdSv7BdPku-MdYXbMMI",
+                'X-LC-Key': "tzm7xUiRWzwJu9Dl1Npgw6mV",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+  console.log('%c\n\n如果有不懂的或者有更好的 idea 可以一起交流噢(QQ:1792132332)\n\n记得备注 --> %cconsole交流%c\n\n',"text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;","text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;color:red;","text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;color:black");
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('<i class="fa fa-fw fa-ravelry"></i>复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).html('<i class="fa fa-fw fa-check"></i>复制成功')
+          else $(this).html('<i class="fa fa-fw fa-times"></i>复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.html('<i class="fa fa-fw fa-ravelry"></i>复制')
+        }, 300)
+      }).append(e)
+    })
+    // $('.copy-btn').append('<i class="fa fa-fw fa-contao"></i>')
+  </script>
+
+
+  

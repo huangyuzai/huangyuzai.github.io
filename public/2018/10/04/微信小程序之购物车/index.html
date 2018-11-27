@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55); /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言这里实现一下小程序里边购物车功能建议多看文档：微信开发文档">
+<meta name="keywords" content="微信小程序,购物车">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序之购物车">
+<meta property="og:url" content="https://hyuzai.cn/2018/10/04/微信小程序之购物车/index.html">
+<meta property="og:site_name" content="yuzai个人博客">
+<meta property="og:description" content="前言这里实现一下小程序里边购物车功能建议多看文档：微信开发文档">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-04T15:39:29.089Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序之购物车">
+<meta name="twitter:description" content="前言这里实现一下小程序里边购物车功能建议多看文档：微信开发文档">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yuzai个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://hyuzai.cn/2018/10/04/微信小程序之购物车/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>微信小程序之购物车 | yuzai个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/huangyuzai" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper " >
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yuzai个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+      <div id="box" style="width: 350px;margin: 0 auto;">
+        <canvas id="canvas" width="900" height="500" style="margin: 0 auto;position:relative;z-index:2;margin-bottom: 1em;max-width: 100%;height: auto;width: 100%;font-family:Apple Chancery"></canvas>
+        <a href="javascript:;" title="别闹！在干活呢" class="grav_left">111</a>
+        <a href="javascript:;" title="别弄我，去弄我对面那个" class="grav_right"></a>
+        <span class="icon_left"><i class="left_i fa fa-grav" aria-hidden="true"></i></span>
+        <span class="icon_right"><i class="right_i fa fa-grav" aria-hidden="true"></i></span>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+  <script type="text/javascript" src="https://blog-1257769397.cos.ap-guangzhou.myqcloud.com/titleAnimate.min.js"></script>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-fort-awesome "></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags "></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-pie-chart "></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-moon-o "></i> <br />时间轴</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hyuzai.cn/2018/10/04/微信小程序之购物车/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Author">
+      <meta itemprop="description" content="记录学习过程，以及个人随笔">
+      <meta itemprop="image" content="/images/my_img.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yuzai个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微信小程序之购物车
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-pencil-square-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-04 19:28:21 / 修改时间：23:39:29" itemprop="dateCreated datePublished" datetime="2018-10-04T19:28:21+08:00">2018-10-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/微信小程序/" itemprop="url" rel="index"><span itemprop="name">微信小程序</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/04/微信小程序之购物车/" class="leancloud_visitors" data-flag-title="微信小程序之购物车">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note default"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这里实现一下小程序里边购物车功能<br>建议多看文档：<a href="https://developers.weixin.qq.com/miniprogram/dev/index.html" target="_blank" rel="noopener">微信开发文档</a></p></div>
+<a id="more"></a>
+<h2 id="实现增加商品的数量"><a href="#实现增加商品的数量" class="headerlink" title="实现增加商品的数量"></a>实现增加商品的数量</h2><blockquote>
+<p>思路：当用户点击增加按钮时，商品数量 +1 ,同时向后台发送增加商品数量的请求，这里没有实现超过库存就禁止增加数量，如果想做这个功能就加一个判断就可以了，判断当前的数量(增加后的)是否大于库存数量，如果大于库存数量则不发送请求同时商品数量不允许再增加</p>
+</blockquote>
+<p>上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加按钮被点击</span></span><br><span class="line">  addButtonClick:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> user_data = wx.getStorageSync(<span class="string">'user_data'</span>);   <span class="comment">//获取缓存里面的用户信息</span></span><br><span class="line">    <span class="keyword">const</span> index = <span class="built_in">parseInt</span>(tap.currentTarget.id);     <span class="comment">//获取当前的商品的索引值</span></span><br><span class="line">    <span class="keyword">let</span> dataSource = that.data.dataSource;            <span class="comment">//购物车所有的商品数据</span></span><br><span class="line">    <span class="keyword">let</span> quantity = dataSource[index].quantity;        <span class="comment">//获取购买数量</span></span><br><span class="line">    quantity = quantity + <span class="number">1</span>;                          <span class="comment">//将购买数量 +1</span></span><br><span class="line">    dataSource[index].quantity = quantity;            <span class="comment">//更改当前商品的数量</span></span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      dataSource: dataSource                          <span class="comment">//更新商品数据</span></span><br><span class="line">    &#125;);</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: url,                                       </span><br><span class="line">      data: &#123;                                         <span class="comment">//发送给后端的参数</span></span><br><span class="line">        <span class="string">"cart_id"</span>: dataSource[index].cart_id,</span><br><span class="line">        <span class="string">"q"</span>: dataSource[index].quantity,</span><br><span class="line">        <span class="string">"id"</span>: dataSource[index].goods_id,</span><br><span class="line">        <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">      &#125;,</span><br><span class="line">      method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">      <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">    that.getTotalPrice();            <span class="comment">//重新计算总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**计算总价格  */</span></span><br><span class="line">  getTotalPrice() &#123;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                  <span class="comment">// 获取购物车列表</span></span><br><span class="line">    <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; good.length; i++) &#123;           <span class="comment">// 循环列表得到每个数据</span></span><br><span class="line">      <span class="keyword">if</span> (good[i].checks) &#123;                           <span class="comment">// 判断选中才会计算价格</span></span><br><span class="line">        total += good[i].quantity * good[i].price;    <span class="comment">// 所有价格加起来</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;                                    <span class="comment">// 最后赋值到data中渲染到页面</span></span><br><span class="line">      good: good,</span><br><span class="line">      total_all_price: total.toFixed(<span class="number">2</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实现减少商品的数量和删除商品"><a href="#实现减少商品的数量和删除商品" class="headerlink" title="实现减少商品的数量和删除商品"></a>实现减少商品的数量和删除商品</h2><blockquote>
+<p>思路：当用户点击减少按钮时，商品数量 -1 ，同时发送减少商品数量的请求，如果商品数量小于1,则发送删除商品请求，成功之后刷新当前页面<br>Tips: 刷新页面的目的是重新获取一次数据，这里我的获取数据是写在 onShow() 这个生命周期里，所以当用户删除商品成功以后执行 onShow() 这个生命周期函数</p>
+</blockquote>
+<p>上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 减少按钮被点击</span></span><br><span class="line">  reduceButtonClick:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> user_data = wx.getStorageSync(<span class="string">'user_data'</span>);</span><br><span class="line">    <span class="keyword">const</span> index = <span class="built_in">parseInt</span>(tap.currentTarget.id);</span><br><span class="line">    <span class="keyword">let</span> dataSource = that.data.dataSource[index];</span><br><span class="line">    <span class="keyword">let</span> quantity = dataSource.quantity;         <span class="comment">//获取购买数量</span></span><br><span class="line">    <span class="keyword">if</span> (quantity == <span class="number">1</span>) &#123;                        <span class="comment">//判断是否等于1</span></span><br><span class="line">      wx.showModal(&#123;</span><br><span class="line">        title: <span class="string">'提示'</span>,</span><br><span class="line">        content: <span class="string">'确定将  '</span> + dataSource.name + <span class="string">'  移出购物车吗？'</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">sm</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (sm.confirm) &#123;</span><br><span class="line">            <span class="keyword">var</span> tempData = that.data.dataSource;    <span class="comment">//所有商品数据</span></span><br><span class="line">            tempData.splice(index, <span class="number">1</span>);              <span class="comment">//从当前索引值开始删除1项数据</span></span><br><span class="line">            that.setData(&#123;</span><br><span class="line">              dataSource: tempData                  <span class="comment">//更新数据</span></span><br><span class="line">            &#125;)</span><br><span class="line">            wx.request(&#123;</span><br><span class="line">              url: url,                             <span class="comment">//发送删除请求</span></span><br><span class="line">              data: &#123;</span><br><span class="line">                <span class="string">"cart_id"</span>: dataSource.cart_id,</span><br><span class="line">                <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">              &#125;,</span><br><span class="line">              method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">              <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">              header: &#123;</span><br><span class="line">                <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">              &#125;,</span><br><span class="line">              success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">                that.onShow()                       <span class="comment">//删除成功之后刷新当前页面</span></span><br><span class="line">              &#125;,</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sm.cancel) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                                       <span class="comment">//如果商品数量不等于 1                                 </span></span><br><span class="line">      <span class="keyword">var</span> dataSource_2 = that.data.dataSource;            </span><br><span class="line">      <span class="keyword">var</span> quantity2 = quantity - <span class="number">1</span>;</span><br><span class="line">      dataSource_2[index].quantity = quantity2;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        dataSource: dataSource_2</span><br><span class="line">      &#125;);</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: url,</span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">"cart_id"</span>: dataSource_2[index].cart_id,</span><br><span class="line">          <span class="string">"q"</span>: dataSource_2[index].quantity,</span><br><span class="line">          <span class="string">"id"</span>: dataSource_2[index].goods_id,</span><br><span class="line">          <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">        <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">        header: &#123;</span><br><span class="line">          <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">          </span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    that.getTotalPrice();                           <span class="comment">//重新计算总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**计算总价格  */</span></span><br><span class="line">  getTotalPrice() &#123;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                  <span class="comment">// 获取购物车列表</span></span><br><span class="line">    <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; good.length; i++) &#123;           <span class="comment">// 循环列表得到每个数据</span></span><br><span class="line">      <span class="keyword">if</span> (good[i].checks) &#123;                           <span class="comment">// 判断选中才会计算价格</span></span><br><span class="line">        total += good[i].quantity * good[i].price;    <span class="comment">// 所有价格加起来</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;                                    <span class="comment">// 最后赋值到data中渲染到页面</span></span><br><span class="line">      good: good,</span><br><span class="line">      total_all_price: total.toFixed(<span class="number">2</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实现结算功能"><a href="#实现结算功能" class="headerlink" title="实现结算功能"></a>实现结算功能</h2><blockquote>
+<p>思路：当用户点击结算的时候判断是否选择了商品，如果没有选择商品则提示用户选择商品，如果选择了商品，则跳转到预订单页面</p>
+</blockquote>
+<p>上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*点击结算 */</span></span><br><span class="line">  toBuy:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                        <span class="comment">//所有商品数据</span></span><br><span class="line">    <span class="keyword">let</span> user_info = wx.getStorageSync(<span class="string">'user_data'</span>)</span><br><span class="line">    <span class="keyword">if</span> (that.data.total_all_price == <span class="number">0</span>)&#123;                    <span class="comment">//判断是否选择了商品，这里我是判断总价格</span></span><br><span class="line">      wx.showToast(&#123;</span><br><span class="line">        title: <span class="string">'请选择商品'</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.data.good_one = [];                                   <span class="comment">//重置数组</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.data.dataSource.length; i++) &#123;   <span class="comment">//循环购物车中的商品</span></span><br><span class="line">        <span class="keyword">if</span> (good[i].checks == <span class="literal">true</span>) &#123;</span><br><span class="line">          <span class="keyword">var</span> good_one1 = [good[i].cart_id, good[i].quantity];</span><br><span class="line">          <span class="keyword">this</span>.data.good_one.push(good_one1)                    <span class="comment">//将数据添加到数组里边</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: url,                                      <span class="comment">//发送结算请求</span></span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">'data'</span>: <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.data.good_one),</span><br><span class="line">          <span class="string">'uid'</span>: user_info.uid</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'POST'</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">           <span class="keyword">var</span> res_1 = <span class="built_in">JSON</span>.stringify(res.data)         <span class="comment">//将返回的数据格式化再作为参数跳转到预订单页面</span></span><br><span class="line">          wx.navigateTo(&#123;</span><br><span class="line">            url: <span class="string">'../buy/buy?data='</span> + res_1,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h2 id="实现全选"><a href="#实现全选" class="headerlink" title="实现全选"></a>实现全选</h2><blockquote>
+<p>思路：当用户点击全选时，改变所有商品的选择状态，同时计算总价格</p>
+</blockquote>
+<p>上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**点击全选 */</span></span><br><span class="line">  setChecked:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> checked = <span class="keyword">this</span>.data.checked;              <span class="comment">//是否为全选状态</span></span><br><span class="line">    checked = !checked;                           <span class="comment">//改变状态</span></span><br><span class="line">    <span class="keyword">let</span> dataSource = <span class="keyword">this</span>.data.dataSource;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; dataSource.length; i++) &#123;</span><br><span class="line">      dataSource[i].checks = checked;            <span class="comment">// 改变所有商品状态</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      checked: checked,                          <span class="comment">//更新全选状态</span></span><br><span class="line">      dataSource: dataSource                     <span class="comment">//更新所有商品的状态</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.getTotalPrice();                        <span class="comment">//重新获取总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**计算总价格  */</span></span><br><span class="line">  getTotalPrice() &#123;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                  <span class="comment">// 获取购物车列表</span></span><br><span class="line">    <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; good.length; i++) &#123;           <span class="comment">// 循环列表得到每个数据</span></span><br><span class="line">      <span class="keyword">if</span> (good[i].checks) &#123;                           <span class="comment">// 判断选中才会计算价格</span></span><br><span class="line">        total += good[i].quantity * good[i].price;    <span class="comment">// 所有价格加起来</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;                                    <span class="comment">// 最后赋值到data中渲染到页面</span></span><br><span class="line">      good: good,</span><br><span class="line">      total_all_price: total.toFixed(<span class="number">2</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="点击单个选择框"><a href="#点击单个选择框" class="headerlink" title="点击单个选择框"></a>点击单个选择框</h2><blockquote>
+<p>思路：当用户点击单个商品时，计算所选择的商品的价格</p>
+</blockquote>
+<p>上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**点击单个多选框 */</span></span><br><span class="line">  allCheckbox:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">0</span>                                       <span class="comment">//设置初始总价格</span></span><br><span class="line">    <span class="keyword">var</span> index = tap.currentTarget.dataset.index     <span class="comment">//获取索引值</span></span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource                 <span class="comment">//获取购物车列表</span></span><br><span class="line">    <span class="keyword">const</span> checks = good[index].checks;              <span class="comment">//获取当前商品的选中状态</span></span><br><span class="line">    good[index].checks = !checks                    <span class="comment">//改变当前商品的状态</span></span><br><span class="line">    <span class="keyword">var</span> all_shop_1 = <span class="built_in">parseInt</span>(good[index].cart_id)  <span class="comment">//获取商品的购物车id</span></span><br><span class="line">    <span class="keyword">var</span> shop_quantity_1 = good[index].quantity      <span class="comment">//获取商品的数量</span></span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      dataSource: good</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.getTotalPrice()                            <span class="comment">//重新获取总价格</span></span><br><span class="line">    <span class="comment">/*设置全选 */</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i  = <span class="number">0</span>;i&lt;good.length;i++)&#123;</span><br><span class="line">      a += good[i].quantity * good[i].price</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.data.total_all_price == a)&#123;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        checked: <span class="literal">true</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        checked: <span class="literal">false</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**计算总价格  */</span></span><br><span class="line">  getTotalPrice() &#123;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                  <span class="comment">// 获取购物车列表</span></span><br><span class="line">    <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; good.length; i++) &#123;           <span class="comment">// 循环列表得到每个数据</span></span><br><span class="line">      <span class="keyword">if</span> (good[i].checks) &#123;                           <span class="comment">// 判断选中才会计算价格</span></span><br><span class="line">        total += good[i].quantity * good[i].price;    <span class="comment">// 所有价格加起来</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;                                    <span class="comment">// 最后赋值到data中渲染到页面</span></span><br><span class="line">      good: good,</span><br><span class="line">      total_all_price: total.toFixed(<span class="number">2</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="接下来是完整的代码"><a href="#接下来是完整的代码" class="headerlink" title="接下来是完整的代码"></a>接下来是完整的代码</h2><h3 id="wxml部分"><a href="#wxml部分" class="headerlink" title="wxml部分"></a>wxml部分</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scroll-view</span> <span class="attr">class</span> = <span class="string">"scrol_view_style"</span> <span class="attr">scroll-x</span> = <span class="string">"&#123;&#123;false&#125;&#125;"</span> <span class="attr">scroll-y</span> = <span class="string">"&#123;&#123;true&#125;&#125;"</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for-items</span> = <span class="string">"&#123;&#123;dataSource&#125;&#125;"</span> <span class="attr">class</span> = <span class="string">"list_item_style"</span> <span class="attr">wx:key</span>=<span class="string">"&#123;&#123; index &#125;&#125;"</span> &gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">checkbox-group</span> <span class="attr">bindchange</span>=<span class="string">"checkboxChange"</span> <span class="attr">data-index</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">data-checks</span>=<span class="string">"&#123;&#123;item.checks&#125;&#125;"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;item.cart_id&#125;&#125;"</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;item.checks&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"checkbox_one"</span> <span class="attr">data-index</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">bindtap</span>=<span class="string">"allCheckbox"</span>  /&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">image</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;item.image&#125;&#125;"</span> <span class="attr">class</span> = <span class="string">"good_main_image"</span>&gt;</span><span class="tag">&lt;/<span class="name">image</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span> = <span class="string">"item_good_title"</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">image</span> <span class="attr">src</span>=<span class="string">"../resource/add.png"</span> <span class="attr">class</span> = <span class="string">"add_image_style"</span> <span class="attr">id</span> = <span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">bindtap</span> = <span class="string">"addButtonClick"</span>&gt;</span><span class="tag">&lt;/<span class="name">image</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span> = <span class="string">"good_buy_number"</span> <span class="attr">value</span> = <span class="string">"&#123;&#123;item.quantity&#125;&#125;"</span>/&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">image</span> <span class="attr">src</span>=<span class="string">"../resource/reduce.png"</span> <span class="attr">class</span> = <span class="string">"reduce_image_style"</span> <span class="attr">id</span> = <span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">bindtap</span> = <span class="string">"reduceButtonClick"</span>&gt;</span><span class="tag">&lt;/<span class="name">image</span>&gt;</span> </span><br><span class="line">              <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">'guige'</span>&gt;</span>规格:\t&#123;&#123;item.option[0].value&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span> = <span class="string">"price_back_view"</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>  = <span class="string">"right_list_item_price"</span>&gt;</span>¥&#123;&#123;item.price&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span> = <span class="string">"position:absolute;bottom:0px;left:0px;right:0px;height:1px;background-color:#D3D3D3"</span>&gt;</span><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">checkbox-group</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'height:40px;'</span> <span class="attr">class</span>=<span class="string">'h-40'</span>&gt;</span><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'buy_shop'</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;!is_shop&#125;&#125;"</span> &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;item.name&#125;&#125;"</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;checked&#125;&#125;"</span> <span class="attr">style</span>=<span class="string">'margin-left:10px;'</span> <span class="attr">bindtap</span>=<span class="string">'setChecked'</span>/&gt;</span>全选</span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">'heji'</span>&gt;</span>合计:<span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">'all_shop_price'</span>&gt;</span>￥&#123;&#123;total_all_price&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span><span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'jiesuan'</span> <span class="attr">bindtap</span>=<span class="string">"toBuy"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">text</span>&gt;</span>结算<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span> = <span class="string">"height:10px;background-color:#F5F5F5;width:100%"</span>&gt;</span><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'no_shop'</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;is_shop&#125;&#125;"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">text</span>&gt;</span>购物车中没有商品<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">scroll-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="wxss部分"><a href="#wxss部分" class="headerlink" title="wxss部分"></a>wxss部分</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*输入框背景样式*/</span></span><br><span class="line"><span class="selector-class">.input_back_view_style</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>:white;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输入框样式*/</span></span><br><span class="line"><span class="selector-class">.input_class</span>&#123;</span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="number">#D3D3D3</span>;</span><br><span class="line">    <span class="attribute">border-style</span>:solid;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*list样式*/</span></span><br><span class="line"><span class="selector-class">.scrol_view_style</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#F5F5F5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*item*/</span></span><br><span class="line"><span class="selector-class">.list_item_style</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">90px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">background</span>: white;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*商品主图*/</span></span><br><span class="line"><span class="selector-class">.good_main_image</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">80px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">80px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">30px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*商品名称*/</span></span><br><span class="line"><span class="selector-class">.item_good_title</span>&#123;</span><br><span class="line">    <span class="attribute">text-align</span>: left;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">120px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">white-space</span>:nowrap;</span><br><span class="line">    <span class="attribute">word-break</span>:keep-all;</span><br><span class="line">    <span class="attribute">overflow</span>:hidden;</span><br><span class="line">    <span class="attribute">text-overflow</span>:ellipsis;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">45%</span>;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">/*+号按钮*/</span></span><br><span class="line"><span class="selector-class">.add_image_style</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">position</span>:relative;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">60px</span>;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">float</span>:right;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*——号按钮*/</span></span><br><span class="line"><span class="selector-class">.reduce_image_style</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">position</span>:relative;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">60px</span>;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">float</span>:right;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*购买数量*/</span></span><br><span class="line"><span class="selector-class">.good_buy_number</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">25px</span>;</span><br><span class="line">    <span class="attribute">position</span>:relative;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">57px</span>;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">float</span>:right;</span><br><span class="line">    <span class="attribute">font-size</span>:<span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>:<span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>:<span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="number">#D3D3D3</span>;</span><br><span class="line">    <span class="attribute">border-style</span>: solid;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*价钱的背景试图*/</span></span><br><span class="line"><span class="selector-class">.price_back_view</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">120px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">60px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*售价*/</span></span><br><span class="line"><span class="selector-class">.right_list_item_price</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#FF6261</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*市场价*/</span></span><br><span class="line"><span class="selector-class">.right_list_item_market_price</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#333333</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">text-decoration</span>:line-through;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 没有商品时的购物车样式 */</span></span><br><span class="line"><span class="selector-class">.no_shop</span>&#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">50</span>rpx;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#bbb</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*规格的样式*/</span></span><br><span class="line"><span class="selector-class">.guige</span>&#123;</span><br><span class="line">   <span class="attribute">position</span>: absolute;</span><br><span class="line">   <span class="attribute">left</span>: <span class="number">120px</span>;</span><br><span class="line">   <span class="attribute">top</span>: <span class="number">36px</span>;</span><br><span class="line">   <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">   <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*多选按钮*/</span></span><br><span class="line"><span class="selector-class">.checkbox_one</span>&#123;</span><br><span class="line">   <span class="attribute">margin-top</span>: <span class="number">10%</span>;</span><br><span class="line">   <span class="attribute">margin-left</span>: <span class="number">6px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 未选中的 背景样式 */</span></span><br><span class="line"><span class="selector-tag">checkbox</span> <span class="selector-class">.wx-checkbox-input</span>&#123;</span><br><span class="line">   <span class="attribute">border-radius</span>: <span class="number">50%</span>;<span class="comment">/* 圆角 */</span></span><br><span class="line">   <span class="attribute">width</span>: <span class="number">35</span>rpx; <span class="comment">/* 背景的宽 */</span></span><br><span class="line">   <span class="attribute">height</span>: <span class="number">35</span>rpx; <span class="comment">/* 背景的高 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 选中后的 背景样式 （红色背景 无边框 可根据UI需求自己修改） */</span></span><br><span class="line"><span class="selector-tag">checkbox</span> <span class="selector-class">.wx-checkbox-input</span><span class="selector-class">.wx-checkbox-input-checked</span>&#123;</span><br><span class="line">   <span class="attribute">border-color</span>: red;</span><br><span class="line">   <span class="attribute">background</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 选中后的 对勾样式 （白色对勾 可根据UI需求自己修改） */</span></span><br><span class="line"><span class="selector-tag">checkbox</span> <span class="selector-class">.wx-checkbox-input</span><span class="selector-class">.wx-checkbox-input-checked</span><span class="selector-pseudo">::before</span>&#123;</span><br><span class="line">   <span class="attribute">border-radius</span>: <span class="number">50%</span>;<span class="comment">/* 圆角 */</span></span><br><span class="line">   <span class="attribute">width</span>: <span class="number">35</span>rpx;<span class="comment">/* 选中后对勾大小，不要超过背景的尺寸 */</span></span><br><span class="line">   <span class="attribute">height</span>: <span class="number">35</span>rpx;<span class="comment">/* 选中后对勾大小，不要超过背景的尺寸 */</span></span><br><span class="line">   <span class="attribute">line-height</span>: <span class="number">35</span>rpx;</span><br><span class="line">   <span class="attribute">text-align</span>: center;</span><br><span class="line">   <span class="attribute">font-size</span>:<span class="number">25</span>rpx; <span class="comment">/* 对勾大小 30rpx */</span></span><br><span class="line">   <span class="attribute">color</span>:<span class="number">#fff</span>; <span class="comment">/* 对勾颜色 白色 */</span></span><br><span class="line">   <span class="attribute">background</span>: transparent;</span><br><span class="line">   <span class="attribute">transform</span>:<span class="built_in">translate</span>(-50%, -50%) <span class="built_in">scale</span>(1);</span><br><span class="line">   <span class="attribute">-webkit-transform</span>:<span class="built_in">translate</span>(-50%, -50%) <span class="built_in">scale</span>(1);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*合计样式*/</span></span><br><span class="line"><span class="selector-class">.heji</span>&#123;</span><br><span class="line">  <span class="comment">/* margin-left: 140px; */</span></span><br><span class="line">   <span class="attribute">float</span>: right;</span><br><span class="line">   <span class="attribute">margin-right</span>: <span class="number">75px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*合计价格的样式*/</span></span><br><span class="line"><span class="selector-class">.all_shop_price</span>&#123;</span><br><span class="line">   <span class="attribute">color</span>: <span class="number">#FF6261</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*结算的样式*/</span></span><br><span class="line"><span class="selector-class">.jiesuan</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">13px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to right, #FF6261 , #FF4500); <span class="comment">/* 标准的语法 */</span></span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">right</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*全选的样式*/</span></span><br><span class="line"><span class="selector-class">.buy_shop</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: white;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">position</span>: fixed;</span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">10px</span> <span class="built_in">rgba</span>(155, 143, 143, 0.6)</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.h-40</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">0px</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: -<span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data:&#123;</span><br><span class="line">    dataSource:&#123;&#125;,          <span class="comment">//购物车数据</span></span><br><span class="line">    total_all_price:<span class="number">0</span>,      <span class="comment">//商品的总价格</span></span><br><span class="line">    all_shop:<span class="number">0</span>,             <span class="comment">//所选商品的id</span></span><br><span class="line">    shop_quantity:<span class="number">0</span>,        <span class="comment">//所选商品的数量</span></span><br><span class="line">    good_one:[],            <span class="comment">//单个商品的数据</span></span><br><span class="line">    checked:<span class="literal">false</span>,          <span class="comment">//是否为全选</span></span><br><span class="line">    is_shop:<span class="literal">false</span>,          <span class="comment">//是否有商品</span></span><br><span class="line">    shopData:<span class="literal">null</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad:<span class="function"><span class="keyword">function</span>(<span class="params">options</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  onReady:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 生命周期函数--监听页面初次渲染完成</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onShow:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 生命周期函数--监听页面显示</span></span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      total_all_price:<span class="number">0</span>,</span><br><span class="line">      checked:<span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">var</span> user_data = wx.getStorageSync(<span class="string">'user_data'</span>);</span><br><span class="line">    <span class="keyword">if</span>(user_data == <span class="string">''</span>)&#123;</span><br><span class="line">      wx.showModal(&#123;</span><br><span class="line">        title: <span class="string">'错误提示'</span>,</span><br><span class="line">        content: <span class="string">'请登录'</span>,</span><br><span class="line">        success:<span class="function"><span class="keyword">function</span>(<span class="params">sm</span>)</span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(sm.confirm)&#123;</span><br><span class="line">            wx.switchTab(&#123;</span><br><span class="line">              url: <span class="string">'../me/me'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            wx.switchTab(&#123;</span><br><span class="line">              url: <span class="string">'../home/home'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: url,</span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">'uid'</span>: user_data.uid</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">        <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">        header: &#123;</span><br><span class="line">          <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(res.data.goods.length == <span class="number">0</span>)&#123;</span><br><span class="line">            that.setData(&#123;</span><br><span class="line">              is_shop:<span class="literal">true</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            that.setData(&#123;</span><br><span class="line">              is_shop: <span class="literal">false</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">          that.setData(&#123;</span><br><span class="line">            dataSource:res.data.goods,</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  onHide:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 生命周期函数--监听页面隐藏</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onUnload:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 生命周期函数--监听页面卸载</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onPullDownRefresh: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 页面相关事件处理函数--监听用户下拉动作</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onReachBottom: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 页面上拉触底事件的处理函数</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onShareAppMessage: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 用户点击右上角分享</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      title: <span class="string">'title'</span>,   <span class="comment">// 分享标题</span></span><br><span class="line">      desc: <span class="string">'desc'</span>, <span class="comment">// 分享描述</span></span><br><span class="line">      path: <span class="string">'path'</span> <span class="comment">// 分享路径</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// 添加按钮被点击</span></span><br><span class="line">  addButtonClick:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> user_data = wx.getStorageSync(<span class="string">'user_data'</span>);   <span class="comment">//获取缓存里面的用户信息</span></span><br><span class="line">    <span class="keyword">const</span> index = <span class="built_in">parseInt</span>(tap.currentTarget.id);     <span class="comment">//获取当前的商品的索引值</span></span><br><span class="line">    <span class="keyword">let</span> dataSource = that.data.dataSource;            <span class="comment">//购物车所有的商品数据</span></span><br><span class="line">    <span class="keyword">let</span> quantity = dataSource[index].quantity;        <span class="comment">//获取购买数量</span></span><br><span class="line">    quantity = quantity + <span class="number">1</span>;                          <span class="comment">//将购买数量 +1</span></span><br><span class="line">    dataSource[index].quantity = quantity;            <span class="comment">//更改当前商品的数量</span></span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      dataSource: dataSource                          <span class="comment">//更新商品数据</span></span><br><span class="line">    &#125;);</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: url,                                       </span><br><span class="line">      data: &#123;                                         <span class="comment">//发送给后端的参数</span></span><br><span class="line">        <span class="string">"cart_id"</span>: dataSource[index].cart_id,</span><br><span class="line">        <span class="string">"q"</span>: dataSource[index].quantity,</span><br><span class="line">        <span class="string">"id"</span>: dataSource[index].goods_id,</span><br><span class="line">        <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">      &#125;,</span><br><span class="line">      method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">      <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">    that.getTotalPrice();            <span class="comment">//重新计算总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line"><span class="comment">// 减少按钮被点击</span></span><br><span class="line">  reduceButtonClick:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> user_data = wx.getStorageSync(<span class="string">'user_data'</span>);</span><br><span class="line">    <span class="keyword">const</span> index = <span class="built_in">parseInt</span>(tap.currentTarget.id);</span><br><span class="line">    <span class="keyword">let</span> dataSource = that.data.dataSource[index];</span><br><span class="line">    <span class="keyword">let</span> quantity = dataSource.quantity;         <span class="comment">//获取购买数量</span></span><br><span class="line">    <span class="keyword">if</span> (quantity == <span class="number">1</span>) &#123;                        <span class="comment">//判断是否等于1</span></span><br><span class="line">      wx.showModal(&#123;</span><br><span class="line">        title: <span class="string">'提示'</span>,</span><br><span class="line">        content: <span class="string">'确定将  '</span> + dataSource.name + <span class="string">'  移出购物车吗？'</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">sm</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (sm.confirm) &#123;</span><br><span class="line">            <span class="keyword">var</span> tempData = that.data.dataSource;    <span class="comment">//所有商品数据</span></span><br><span class="line">            tempData.splice(index, <span class="number">1</span>);              <span class="comment">//从当前索引值开始删除1项数据</span></span><br><span class="line">            that.setData(&#123;</span><br><span class="line">              dataSource: tempData                  <span class="comment">//更新数据</span></span><br><span class="line">            &#125;)</span><br><span class="line">            wx.request(&#123;</span><br><span class="line">              url: url,                             <span class="comment">//发送删除请求</span></span><br><span class="line">              data: &#123;</span><br><span class="line">                <span class="string">"cart_id"</span>: dataSource.cart_id,</span><br><span class="line">                <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">              &#125;,</span><br><span class="line">              method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">              <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">              header: &#123;</span><br><span class="line">                <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">              &#125;,</span><br><span class="line">              success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">                that.onShow()                       <span class="comment">//删除成功之后刷新当前页面</span></span><br><span class="line">              &#125;,</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sm.cancel) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                                       <span class="comment">//如果商品数量不等于 1                                 </span></span><br><span class="line">      <span class="keyword">var</span> dataSource_2 = that.data.dataSource;            </span><br><span class="line">      <span class="keyword">var</span> quantity2 = quantity - <span class="number">1</span>;</span><br><span class="line">      dataSource_2[index].quantity = quantity2;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        dataSource: dataSource_2</span><br><span class="line">      &#125;);</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: url,</span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">"cart_id"</span>: dataSource_2[index].cart_id,</span><br><span class="line">          <span class="string">"q"</span>: dataSource_2[index].quantity,</span><br><span class="line">          <span class="string">"id"</span>: dataSource_2[index].goods_id,</span><br><span class="line">          <span class="string">"uid"</span>: user_data.uid</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'POST'</span>, <span class="comment">// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</span></span><br><span class="line">        <span class="comment">// header: &#123;&#125;, // 设置请求的 header</span></span><br><span class="line">        header: &#123;</span><br><span class="line">          <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">          </span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    that.getTotalPrice();                           <span class="comment">//重新计算总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/*checkbox 选中或未选中都会触发该事件*/</span></span><br><span class="line">  checkboxChange: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    that.setData(&#123;</span><br><span class="line">      all_shop: e.detail.value,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="comment">/*点击结算 */</span></span><br><span class="line">  toBuy:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                        <span class="comment">//所有商品数据</span></span><br><span class="line">    <span class="keyword">let</span> user_info = wx.getStorageSync(<span class="string">'user_data'</span>)</span><br><span class="line">    <span class="keyword">if</span> (that.data.total_all_price == <span class="number">0</span>)&#123;                    <span class="comment">//判断是否选择了商品，这里我是判断总价格</span></span><br><span class="line">      wx.showToast(&#123;</span><br><span class="line">        title: <span class="string">'请选择商品'</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.data.good_one = [];                                   <span class="comment">//重置数组</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.data.dataSource.length; i++) &#123;   <span class="comment">//循环购物车中的商品</span></span><br><span class="line">        <span class="keyword">if</span> (good[i].checks == <span class="literal">true</span>) &#123;</span><br><span class="line">          <span class="keyword">var</span> good_one1 = [good[i].cart_id, good[i].quantity];</span><br><span class="line">          <span class="keyword">this</span>.data.good_one.push(good_one1)                    <span class="comment">//将数据添加到数组里边</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: url,                                      <span class="comment">//发送结算请求</span></span><br><span class="line">        data: &#123;</span><br><span class="line">          <span class="string">'data'</span>: <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.data.good_one),</span><br><span class="line">          <span class="string">'uid'</span>: user_info.uid</span><br><span class="line">        &#125;,</span><br><span class="line">        method: <span class="string">'POST'</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">           <span class="keyword">var</span> res_1 = <span class="built_in">JSON</span>.stringify(res.data)         <span class="comment">//将返回的数据格式化再作为参数跳转到预订单页面</span></span><br><span class="line">          wx.navigateTo(&#123;</span><br><span class="line">            url: <span class="string">'../buy/buy?data='</span> + res_1,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="comment">/**点击全选 */</span></span><br><span class="line">  setChecked:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> checked = <span class="keyword">this</span>.data.checked;              <span class="comment">//是否为全选状态</span></span><br><span class="line">    checked = !checked;                           <span class="comment">//改变状态</span></span><br><span class="line">    <span class="keyword">let</span> dataSource = <span class="keyword">this</span>.data.dataSource;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; dataSource.length; i++) &#123;</span><br><span class="line">      dataSource[i].checks = checked;            <span class="comment">// 改变所有商品状态</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      checked: checked,                          <span class="comment">//更新全选状态</span></span><br><span class="line">      dataSource: dataSource                     <span class="comment">//更新所有商品的状态</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.getTotalPrice();                        <span class="comment">//重新获取总价格</span></span><br><span class="line">  &#125;,</span><br><span class="line"> <span class="comment">/**点击单个多选框 */</span></span><br><span class="line">  allCheckbox:<span class="function"><span class="keyword">function</span>(<span class="params">tap</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">0</span>                                       <span class="comment">//设置初始总价格</span></span><br><span class="line">    <span class="keyword">var</span> index = tap.currentTarget.dataset.index     <span class="comment">//获取索引值</span></span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource                 <span class="comment">//获取购物车列表</span></span><br><span class="line">    <span class="keyword">const</span> checks = good[index].checks;              <span class="comment">//获取当前商品的选中状态</span></span><br><span class="line">    good[index].checks = !checks                    <span class="comment">//改变当前商品的状态</span></span><br><span class="line">    <span class="keyword">var</span> all_shop_1 = <span class="built_in">parseInt</span>(good[index].cart_id)  <span class="comment">//获取商品的购物车id</span></span><br><span class="line">    <span class="keyword">var</span> shop_quantity_1 = good[index].quantity      <span class="comment">//获取商品的数量</span></span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      dataSource: good</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.getTotalPrice()                            <span class="comment">//重新获取总价格</span></span><br><span class="line">    <span class="comment">/*设置全选 */</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i  = <span class="number">0</span>;i&lt;good.length;i++)&#123;</span><br><span class="line">      a += good[i].quantity * good[i].price</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.data.total_all_price == a)&#123;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        checked: <span class="literal">true</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        checked: <span class="literal">false</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**计算总价格  */</span></span><br><span class="line">  getTotalPrice() &#123;</span><br><span class="line">    <span class="keyword">let</span> good = <span class="keyword">this</span>.data.dataSource;                  <span class="comment">// 获取购物车列表</span></span><br><span class="line">    <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; good.length; i++) &#123;           <span class="comment">// 循环列表得到每个数据</span></span><br><span class="line">      <span class="keyword">if</span> (good[i].checks) &#123;                           <span class="comment">// 判断选中才会计算价格</span></span><br><span class="line">        total += good[i].quantity * good[i].price;    <span class="comment">// 所有价格加起来</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;                                    <span class="comment">// 最后赋值到data中渲染到页面</span></span><br><span class="line">      good: good,</span><br><span class="line">      total_all_price: total.toFixed(<span class="number">2</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>
+    yuzai
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://hyuzai.cn/2018/10/04/微信小程序之购物车/" title="微信小程序之购物车">https://hyuzai.cn/2018/10/04/微信小程序之购物车/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微信小程序/" rel="tag"><i class="fa fa-tag"></i> 微信小程序</a>
+          
+            <a href="/tags/购物车/" rel="tag"><i class="fa fa-tag"></i> 购物车</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/05/微信小程序之页面跳转/" rel="next" title="微信小程序之页面跳转">
+                <i class="fa fa-chevron-left"></i> 微信小程序之页面跳转
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/05/Sublime-Text-3-实用快捷键/" rel="prev" title="Sublime Text 3 实用快捷键">
+                Sublime Text 3 实用快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=RA-5b74267e896c7510" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zODgwNy8xNTMzNQ=="></div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+
+              <img class="site-author-image" itemprop="image"
+                src="/images/my_img.png"
+                alt="Author" />
+
+            
+              <p class="site-author-name" itemprop="name">yuzai</p>
+              <p class="site-description motion-element" itemprop="description">记录学习过程，以及个人随笔</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/huangyuzai" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1792132332@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/qq_37032151" target="_blank" title="csdn"><i class="fa fa-fw fa-contao"></i>csdn</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现增加商品的数量"><span class="nav-number">2.</span> <span class="nav-text">实现增加商品的数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现减少商品的数量和删除商品"><span class="nav-number">3.</span> <span class="nav-text">实现减少商品的数量和删除商品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现结算功能"><span class="nav-number">4.</span> <span class="nav-text">实现结算功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现全选"><span class="nav-number">5.</span> <span class="nav-text">实现全选</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点击单个选择框"><span class="nav-number">6.</span> <span class="nav-text">点击单个选择框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来是完整的代码"><span class="nav-number">7.</span> <span class="nav-text">接下来是完整的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wxml部分"><span class="nav-number">7.1.</span> <span class="nav-text">wxml部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxss部分"><span class="nav-number">7.2.</span> <span class="nav-text">wxss部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js部分"><span class="nav-number">7.3.</span> <span class="nav-text">js部分</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+  <i class="fa fa-yoast"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuzai</span>
+
+  
+
+  
+</div>
+
+
+
+
+<span class="post-meta-divider">|</span>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+      <div>
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=RA-5b74267e896c7510" async = "async" ></script>
+</div>
+
+      </div>
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "3zsVX30bclzi2sWdSv7BdPku-MdYXbMMI")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "3zsVX30bclzi2sWdSv7BdPku-MdYXbMMI",
+                'X-LC-Key': "tzm7xUiRWzwJu9Dl1Npgw6mV",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+  console.log('%c\n\n如果有不懂的或者有更好的 idea 可以一起交流噢(QQ:1792132332)\n\n记得备注 --> %cconsole交流%c\n\n',"text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;","text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;color:red;","text-shadow:1px 1px 1px rgba(0,0,0,.2);font-size:30px;color:black");
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('<i class="fa fa-fw fa-ravelry"></i>复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).html('<i class="fa fa-fw fa-check"></i>复制成功')
+          else $(this).html('<i class="fa fa-fw fa-times"></i>复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.html('<i class="fa fa-fw fa-ravelry"></i>复制')
+        }, 300)
+      }).append(e)
+    })
+    // $('.copy-btn').append('<i class="fa fa-fw fa-contao"></i>')
+  </script>
+
+
+  
